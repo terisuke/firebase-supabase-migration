@@ -12,3 +12,4 @@ npm-debug.log
 *.sublime-project
 settings.json
 serviceAccountKey.json
+package-lock.json
