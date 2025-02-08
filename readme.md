@@ -1,9 +1,9 @@
 # Firebase-Supabase Migration
 
-このプロジェクトは、Firebase (Firestore) に保存されたデータを簡単に Supabase (PostgreSQL) に移行できるようにするためのサンプルです。
+このプロジェクトは、Firebase (Firestore) に保存されたデータを簡単に Supabase (PostgreSQL) に移行できるようにするためのツールです。
 Firebase のテストデータを Supabase に移行する流れは、以下のようになります:
 
-1. Firebase にテストデータをインポート
+1. Firebase にテストデータをインポート(すでにデータがある場合は不要)
 2. Supabase 上にテーブルを作成
 3. Firebase (Firestore) から Supabase にデータ移行 (マイグレーション)
 
@@ -36,7 +36,7 @@ Firebase のテストデータを Supabase に移行する流れは、以下の�
 
 ## 事前準備
 
-### Firebase プロジェクトの準備
+### Firebase プロジェクトの準備(すでにデータがある場合は3.サービスアカウントキーの取得から始めて下さい)
 
 1. [Firebase コンソール](https://console.firebase.google.com/) にアクセスし、新規または既存のプロジェクトを開きます。
 2. Firestore を有効にします（「データベースを作成」を選択し、Firestore を使えるようにする）。
@@ -120,7 +120,7 @@ Firebase のテストデータを Supabase に移行する流れは、以下の�
 
 ## 実行手順
 
-### 4.1 Firebase へテストデータをインポート
+### 4.1 Firebase へテストデータをインポート(すでにデータがある場合はこの工程は不要)
 
 * `importData.js` を使って、`testData/` フォルダにある JSON データをテスト用の Firebase (Firestore) データベースへ一括インポートします。
 
@@ -226,3 +226,16 @@ firebase-supabase-migration/
 6. `testData/*.json`
     * Firebase に投入するサンプルデータです。
     * `importData.js` で読み込み、Firestore コレクションへ追加するようになっています。
+
+## FAQ
+
+### 1. データ移行に失敗した場合はどうすればいいですか？
+
+* エラーログを確認し、`.env` の設定ミスやネットワーク接続の問題、あるいは Firestore 側のデータ構造が想定と異なる可能性があります。エラーログを参考に修正を行ってください。
+
+### 2. どうしてidが000000のような数字なのにTEXT型なのですか？
+
+* int型で保存されているidがTEXT型になっているのは、FirebaseのデータがTEXT型で保存されているためです。
+* そのため、データ移行後もTEXT型のまま保存されます。
+* int型で保存してしまうと、6桁の数字だったとしても000001ではなく1という数字になってしまいます。
+* そのため、TEXT型で保存されているidをそのまま移行しています。
