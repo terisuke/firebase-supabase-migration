@@ -1,14 +1,10 @@
 require('dotenv').config();
 const { Pool } = require('pg');
-
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
 const pool = new Pool({
-  host: process.env.SUPABASE_HOST,
-  database: 'postgres',
-  user: process.env.SUPABASE_USER,
-  password: process.env.SUPABASE_PASSWORD,
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false  // 自己署名証明書を許可
+    rejectUnauthorized: false
   }
 });
 
